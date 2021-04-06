@@ -2,7 +2,7 @@
 Repository containing all the explanations and codes of the project of the course of Hardware/Software Platforms. 
 
 Hi! 👋
-We are two students of the Faculty of Engineering of the university of Mons ([UMONS](https://web.umons.ac.be/en/)). We are in the 1st year of our master's degree and we are in the finality *Electrical Energy and Smart Grids*. 
+We are two students of the Faculty of Engineering of the university of Mons ([UMONS](https://web.umons.ac.be/en/)). We are currently (2020-2021) in the 1st year of our master's degree and we are in the finality *Electrical Energy and Smart Grids*. 
 
 
 
