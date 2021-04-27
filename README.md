@@ -11,5 +11,5 @@ For our course of *Hardware/Software Platforms* we have to implement the interfa
 We choosed a temperature sensor 🌡️ which will be connected to an FPGA through an **I²C** bus. 
 
 Feel free to contact us 📧 for more explanations about this project :
-*  clementhoedenaeken@student.umons.ac.be :bel
+*  clementhoedenaeken@student.umons.ac.be  🇧🇪
 *  
