@@ -6,12 +6,10 @@ It is organised in 3 main parts :
 
 
 # General structure
-Our sensor contains a many registers. Among them, we will only focus on the configuration register and on the temperature register. The address of the registers are given in the datasheet and on the following image. 
 
 To understand the general structure of the project, let us consider the following scheme.  
 
 <img width="710" alt="image" src="https://user-images.githubusercontent.com/82041018/117319862-fd66ec00-ae8b-11eb-97ce-d675e851e096.png">
-
 
 The state machine controls the I2C block. To communicate with the I2C driver, we use two registers: DEVICE and ADDR. The DEVICE register contains the I2C address of the sensor and the ADDR register contains the different values we want to write (register address or values). 
 Then, the I2C driver communicates with the sensor via the SDA and SCL ports.
@@ -21,17 +19,38 @@ We will read the different temperatures from the A register using a C code. The 
 With this structure, the sensor data retrieved by the I2C block is placed by the control code on the output register.
 
 
-
-# Control state machine
-
+## Control state machine
+In this section, we will explain how we will pilot the I²C driver. To do this, we created the following state machine. 
 
 <img width="758" alt="image" src="https://user-images.githubusercontent.com/82041018/117322110-01940900-ae8e-11eb-86e2-d9c6a5bb7ddf.png">
 
+The aim of this state machine is to control the driver to make it do the following sequence.
+* Ask access to the configuration register (in writing mode)
+* Write in the configuration register
+* Ask access to the temperature register (in reading mode)
+* Read the first byte of temperature
+* Read the second byte of temperature
 
+## I²C driver
+This part of the project was not made by ourself. This part is charged to communicate with the sensor. It's state machine is the following.
+
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/81489863/117325002-9ef03c80-ae90-11eb-94b8-64418adf2483.png">
+
+## Temperature sensor
+Our sensor contains many registers. Among them, we will only focus on the configuration register and on the temperature register. The address of the registers are given in the datasheet and on the following image. 
 
 ![Name of the registers](https://user-images.githubusercontent.com/81489863/117309529-c809d080-ae82-11eb-95a3-3eadd410cb91.png)
 
-The configuration register will store the parameters of the sensor. We write in this register to configure our sensor. This figure shows the meaning of the different bits of the configuration byte.
+The configuration register (01) will store the parameters of the sensor. We write in this register to configure our sensor (see Configuration part). 
+
+The temperature register (00) is only reachable in read mode. We will read the value of the temperature in this register. The complexity of this project is the reading which can be done on 9,10,11 or 12 bits. Then, we need at least two bytes to store the temperature. 
+
+
+
+
+# Configuration 
+
+ This figure shows the meaning of the different bits of the configuration byte.
 
 ![Configuration register](https://user-images.githubusercontent.com/81489863/117314000-aad70100-ae86-11eb-8886-ca99b38e1b78.png)
 
@@ -44,10 +63,4 @@ The configuration register will store the parameters of the sensor. We write in 
 
 In the end, the value that we place in our configuration register is  : 01100000.
 
-The temperature register is only reachable in read mode. We will read the value of the temperature in this register. The complexity of this project is the reading which can be done on 9,10,11 or 12 bits. Then, we need at least two bytes to store the temperature. 
-
-
-# Configuration 
-
- 
 
