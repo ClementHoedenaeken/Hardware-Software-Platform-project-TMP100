@@ -12,4 +12,4 @@ We choosed a temperature sensor 🌡️ which will be connected to an FPGA throu
 
 Feel free to contact us 📧 for more explanations about this project :
 *  clementhoedenaeken@student.umons.ac.be  🇧🇪
-*  
+*  Doha.NAJI@student.umons.ac.be 🇧🇪
