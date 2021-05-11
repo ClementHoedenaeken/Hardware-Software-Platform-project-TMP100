@@ -1,6 +1,6 @@
 ## This file contains the explanations of the project
 
-It is organised in 3 main parts :
+It is organised in 2 main parts :
 1. Explain the general structure of the project
 2. Explain the configuration of the project for our specific sensor
 
@@ -43,7 +43,7 @@ Our sensor contains many registers. Among them, we will only focus on the config
 
 ![Name of the registers](https://user-images.githubusercontent.com/81489863/117309529-c809d080-ae82-11eb-95a3-3eadd410cb91.png)
 
-The configuration register (01) will store the parameters of the sensor. We write in this register to configure our sensor (see Configuration part). 
+The configuration register (01) will store the parameters of the sensor. We write in this register to configure our sensor (see [Configuration part](https://github.com/ClementHoedenaeken/Hardware-Software-Platform-project-TMP100/blob/main/Explanations.md#configuration)). 
 
 The temperature register (00) is only reachable in read mode. We will read the value of the temperature in this register. The complexity of this project is the reading which can be done on 9,10,11 or 12 bits. Then, we need at least two bytes to store the temperature. However, we could only focus on the first byte which contains the integer part of the temperature and not consider the second byte which is used to store the decimal part. That means that, in 12 bits reading, we reach a resolution of 0.0625°C (4 bits used to store the decimal part).
 
