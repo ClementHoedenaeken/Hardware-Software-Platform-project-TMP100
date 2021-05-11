@@ -37,13 +37,15 @@ This part of the project was not made by ourself. This part is charged to commun
 <img width="400" alt="image" src="https://user-images.githubusercontent.com/81489863/117325002-9ef03c80-ae90-11eb-94b8-64418adf2483.png">
 
 ## Temperature sensor
+We used the TMP-100 temperature sensor. It has an I²C interface. It is able to measure temperatures ranging from -55°C to +125°C with an accuracy of 3°C. It even has an accuracy of 2°C within the range [-25°C ; +85°C].
+
 Our sensor contains many registers. Among them, we will only focus on the configuration register and on the temperature register. The address of the registers are given in the datasheet and on the following image. 
 
 ![Name of the registers](https://user-images.githubusercontent.com/81489863/117309529-c809d080-ae82-11eb-95a3-3eadd410cb91.png)
 
 The configuration register (01) will store the parameters of the sensor. We write in this register to configure our sensor (see Configuration part). 
 
-The temperature register (00) is only reachable in read mode. We will read the value of the temperature in this register. The complexity of this project is the reading which can be done on 9,10,11 or 12 bits. Then, we need at least two bytes to store the temperature. 
+The temperature register (00) is only reachable in read mode. We will read the value of the temperature in this register. The complexity of this project is the reading which can be done on 9,10,11 or 12 bits. Then, we need at least two bytes to store the temperature. However, we could only focus on the first byte which contains the integer part of the temperature and not consider the second byte which is used to store the decimal part. That means that, in 12 bits reading, we reach a resolution of 0.0625°C (4 bits used to store the decimal part).
 
 
 
@@ -56,7 +58,7 @@ The temperature register (00) is only reachable in read mode. We will read the v
 
 * OS/ALERT : In comparator mode, a 1 indicates that the temperature passed the value of the limits of the sensor.
 * R1 and R0 : Here, we set up the resolution. For this project, we chose a 12 bits reading so assign both R0 and R1 to 1.
-* F1 and F0 : We assign F0 and F1 to 0
+* F1 and F0 : We assign F0 and F1 to 0. The sensor will then raise an error after 1 measurement outside the temperature range.
 * POL : If 0, the alert pin will be active LOW. 
 * TM : We set this bit to 0 because we want to work in comparator mode (and not interrupt mode). 
 * SD : We should place this bit at 1 to shut down the device after the current conversion (for energy savings for example). For this project, we chose to continuously read the temperature so we place this bit at 0. 
