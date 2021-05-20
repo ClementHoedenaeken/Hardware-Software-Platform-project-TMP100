@@ -1,10 +1,15 @@
+
+
 ## This file contains the explanations of the project
 
 It is organised in 2 main parts :
 1. Explain the general structure of the project
 2. Explain the configuration of the project for our specific sensor
 
+# Hardware-Software Platforms--Temperature sensor
+In this file,  you will find how you can proceed to use a temperature sensor.
 
+Hello everybody! We are two students from the Polytechnic faculty of Mons! We are first degree master students. We are in the "Electrical Energy and Smart Grids" finality. The objective of the project is to implement an interface between the sensor and the FPGA through a FPGA. The needed details about this project are available just below, but don't worry, there are many other informations in the Explanations.md file. 
 # General structure
 
 To understand the general structure of the project, let us consider the following scheme.  
@@ -64,5 +69,14 @@ The temperature register (00) is only reachable in read mode. We will read the v
 * SD : We should place this bit at 1 to shut down the device after the current conversion (for energy savings for example). For this project, we chose to continuously read the temperature so we place this bit at 0. 
 
 In the end, the value that we place in our configuration register is  : 01100000.
+
+# How to upload the code
+
+First, we must create a first block file.
+Then, we go to the ghrd file which is the header file.In the ghrd file, we create the same connections as in the block.
+Then, we open the Platform Designer to establish the connections to compile the code.
+After compiling the code, we create the .h file that serves as a link between the C code and the Quartus project. The .h file is used to generate the .sh file (provided :-)).  The C code will be written with the .h file.
+We can now communicate with the card using the PuTTY program.
+Finally, we connect the sensor to the DE0 board and we can finally upload the code to the board.
 
 
