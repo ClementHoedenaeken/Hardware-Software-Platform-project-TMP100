@@ -21,7 +21,7 @@ We will read the different temperatures from the A register using an ARM process
 With this structure, the data, measured by the sensor, is retrieved by the I2C block and placed by the control code on the output registers.
 
 ## I²C driver
-This part of the project was not made by ourself. This part is charged to communicate with the sensor. It's state machine is the following.
+This part of the project was not made by ourself. The code we used was inspired by the [code from Scott Larson](https://forum.digikey.com/t/i2c-master-vhdl/12797) This part is charged to communicate with the sensor. It's state machine is the following.
 
 <img width="400" alt="image" src="https://user-images.githubusercontent.com/81489863/117325002-9ef03c80-ae90-11eb-94b8-64418adf2483.png">
 
@@ -61,8 +61,6 @@ The configuration register (01) will store the parameters of the sensor. We writ
 The temperature register (00) is only reachable in read mode. We will read the value of the temperature in this register. The complexity of this project is the reading which can be done on 9,10,11 or 12 bits. Then, we need at least two bytes to store the temperature. However, we could only focus on the first byte which contains the integer part of the temperature and not consider the second byte which is used to store the decimal part. That means that, in 12 bits reading, we reach a resolution of 0.0625°C (4 bits used to store the decimal part).
 
 
-
-
 # Configuration 
 
  This figure shows the meaning of the different bits of the configuration byte.
@@ -78,7 +76,15 @@ The temperature register (00) is only reachable in read mode. We will read the v
 
 In the end, the value that we place in our configuration register is  : 01100000.
 
-# How to upload the code
+# Implement the project *Tutorial*
+The project is divided in 2 part : the hardware and the software. The hardware is how we will configure the FPGA. The software is the code in C running on the ARM.
+## Hardware part
+To place this part in the FPGA, you have to connect the PC to the FPGA and launch Quartus on the PC. You then navigate through *Tools* -> *Programmer*. Then, you have to select your hardware setup (the specific name of the type of FPGA you are using). Auto detect should work in most cases. You can now write the .sof file to configure the FPGA
+
+## Software part
+This part is slightly more difficult. You first have to connect the chip to the PC and check on which port it is connected in the Device Manager (ex. : COM3). You should no unplug the power supply of the chip and start [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html). In Putty, open a serial connection with the port on which your chip is connected and with a speed (baudrate) equal to 115200. You can now plug back the power supply of the chip. You should see the start of the chip on the putty terminal. 
+
+[....]
 
 First, we must create a first block file.
 Then, we go to the ghrd file which is the header file.In the ghrd file, we create the same connections as in the block.
