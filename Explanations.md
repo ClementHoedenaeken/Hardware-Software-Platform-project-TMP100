@@ -76,21 +76,38 @@ The temperature register (00) is only reachable in read mode. We will read the v
 
 In the end, the value that we place in our configuration register is  : 01100000.
 
-# Implement the project *Tutorial*
-The project is divided in 2 part : the hardware and the software. The hardware is how we will configure the FPGA. The software is the code in C running on the ARM.
+# Implement the project (*Tutorial*)
+The project is divided in 2 part : the hardware and the software. The hardware is how we will configure the FPGA. The software is the code in C running on the ARM. For this tutorial, you need to connect 2 mini-USB cables to your PC and an RJ45 socket from your router. 
 ## Hardware part
-To place this part in the FPGA, you have to connect the PC to the FPGA and launch Quartus on the PC. You then navigate through *Tools* -> *Programmer*. Then, you have to select your hardware setup (the specific name of the type of FPGA you are using). Auto detect should work in most cases. You can now write the .sof file to configure the FPGA
+* To place this part in the FPGA, you have to connect the PC to the FPGA and launch Quartus on the PC. 
+* You then navigate through *Tools* -> *Programmer*. 
+* Then, you have to select your hardware setup (the specific name of the type of FPGA you are using). Auto detect should work in most cases. 
+* You can now write the .sof file to configure the FPGA
 
 ## Software part
-This part is slightly more difficult. You first have to connect the chip to the PC and check on which port it is connected in the Device Manager (ex. : COM3). You should no unplug the power supply of the chip and start [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html). In Putty, open a serial connection with the port on which your chip is connected and with a speed (baudrate) equal to 115200. You can now plug back the power supply of the chip. You should see the start of the chip on the putty terminal. 
+This part is slightly more difficult. 
+* You first have to connect the chip to the PC and check on which port it is connected in the Device Manager (ex. : COM3). 
+* You should now unplug the power supply of the chip and start [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html). 
+* In Putty, open a serial connection with the port on which your chip is connected and with a speed (baudrate) equal to 115200. 
+* You can now plug back the power supply of the chip. You should see the start of the chip on the putty terminal. 
+* Register as **root** and then enter **udhcpc** to request an IP adress
+* Note the IP adress you get. You will need it later.
+* You may want to change the password of the chip now. Type **passwd** in Putty to do so and follow the instructions. 
+* Run [EDS](https://fpgasoftware.intel.com/soceds/21.1/) and navigate to the root of your project usind the command **cd** . If you havn't generated the executable file, write *make* and *enter* in the terminal. 
+* You can now write the executable file on the chip by typing : scp *Name_of_your_file* root@*IP_address_of_the_chip*:/home/root
+* Your software is now placed on the chip. You can check it by typing *ls* in Putty. 
+* To run your script, simply type : ./*Name_of_your_file* in Putty.
 
-[....]
+##Wiring
 
-First, we must create a first block file.
-Then, we go to the ghrd file which is the header file.In the ghrd file, we create the same connections as in the block.
-Then, we open the Platform Designer to establish the connections to compile the code.
-After compiling the code, we create the .h file that serves as a link between the C code and the Quartus project. The .h file is used to generate the .sh file (provided :-)).  The C code will be written with the .h file.
-We can now communicate with the card using the PuTTY program.
-Finally, we connect the sensor to the DE0 board and we can finally upload the code to the board.
+The last thing you have to do to use our project is to connect the temperature sensor to the FPGA. You have to connect 4 pins :
+1. The power supply of the sensor on the *+5V* of the chip (green wire on our photo)
+2. The ground of the sensor on the ground of the chip (black wire)
+3. The SDA pin of the I²C protocol to the GPIO_0[1] pin of the FPGA (yellow wire)
+4. The SCL pin of the I²C protocol to the GPIO_0[0] pin of the FPGA (red wire)
+
+
+![image](https://user-images.githubusercontent.com/81489863/119139109-efe06300-ba42-11eb-8b63-05622a5cc52b.png)
+
 
 
