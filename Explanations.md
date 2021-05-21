@@ -2,14 +2,11 @@
 
 ## This file contains the explanations of the project
 
-It is organised in 2 main parts :
+It is organised in 3 main parts :
 1. Explain the general structure of the project
 2. Explain the configuration of the project for our specific sensor
+3. Explain how to implement this project in practice (*Tutorial*)
 
-# Hardware-Software Platforms--Temperature sensor
-In this file,  you will find how you can proceed to use a temperature sensor.
-
-Hello everybody! We are two students from the Polytechnic faculty of Mons! We are first degree master students. We are in the "Electrical Energy and Smart Grids" finality. The objective of the project is to implement an interface between the sensor and the FPGA through a FPGA. The needed details about this project are available just below, but don't worry, there are many other informations in the Explanations.md file. 
 # General structure
 
 To understand the general structure of the project, let us consider the following scheme.  
@@ -19,27 +16,38 @@ To understand the general structure of the project, let us consider the followin
 The state machine controls the I2C block. To communicate with the I2C driver, we use two registers: DEVICE and ADDR. The DEVICE register contains the I2C address of the sensor and the ADDR register contains the different values we want to write (register address or values). 
 Then, the I2C driver communicates with the sensor via the SDA and SCL ports.
 
-We will read the different temperatures from the A register using a C code. The size of A register is 2 bytes.
+We will read the different temperatures from the A register using an ARM processor programmed in C(see the code in the file *main.c*). The size of A register is 2 bytes. The first byte contains the integer part of the temperature and the second one contains the decimal part of the temperature. This decimal part is written on 1 to 4 bytes depending on the precision of our measure (see [Configuration part](https://github.com/ClementHoedenaeken/Hardware-Software-Platform-project-TMP100/blob/main/Explanations.md#configuration)).
 
-With this structure, the sensor data retrieved by the I2C block is placed by the control code on the output register.
-
-
-## Control state machine
-In this section, we will explain how we will pilot the I²C driver. To do this, we created the following state machine. 
-
-<img width="758" alt="image" src="https://user-images.githubusercontent.com/82041018/117322110-01940900-ae8e-11eb-86e2-d9c6a5bb7ddf.png">
-
-The aim of this state machine is to control the driver to make it do the following sequence.
-* Ask access to the configuration register (in writing mode)
-* Write in the configuration register
-* Ask access to the temperature register (in reading mode)
-* Read the first byte of temperature
-* Read the second byte of temperature
+With this structure, the data, measured by the sensor, is retrieved by the I2C block and placed by the control code on the output registers.
 
 ## I²C driver
 This part of the project was not made by ourself. This part is charged to communicate with the sensor. It's state machine is the following.
 
 <img width="400" alt="image" src="https://user-images.githubusercontent.com/81489863/117325002-9ef03c80-ae90-11eb-94b8-64418adf2483.png">
+
+What we implemented by ourself though is the state machine controlling this I²C driver. We drove it to follow the sequence described on the next image. 
+
+![image](https://user-images.githubusercontent.com/81489863/119115007-fb259580-ba26-11eb-95d8-b2148a3f5ade.png)
+
+
+## Control state machine
+The aim of this state machine is to control the driver to make it do the following sequence.
+* Ask to write in the slave
+* Ask access to the configuration register (in writing mode)
+* Write in the configuration register
+* Ask to write in the slave
+* Ask access to the temperature register 
+* Ask to read in the slave
+* Read the first byte of temperature
+* Read the second byte of temperature
+
+The reading part is then repeated in an infinite loop to keep providing values of temperature in the registers. 
+
+This is done with the following state machine. 
+![image](https://user-images.githubusercontent.com/81489863/119117790-e26aaf00-ba29-11eb-9015-fc0d80e8d5e6.png)
+This is the representation of the state machine built in the file [*bloc.vhd*](https://github.com/ClementHoedenaeken/Hardware-Software-Platform-project-TMP100/blob/23dac9de8565a8c68c71bdf7c4a758f6fdebe366/bloc.vhd)
+
+We checked that this state machine is correct with a testbench and by comparing it to the datasheet of the sensor. 
 
 ## Temperature sensor
 We used the TMP-100 temperature sensor. It has an I²C interface. It is able to measure temperatures ranging from -55°C to +125°C with an accuracy of 3°C. It even has an accuracy of 2°C within the range [-25°C ; +85°C].
