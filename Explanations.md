@@ -98,7 +98,7 @@ This part is slightly more difficult.
 * Your software is now placed on the chip. You can check it by typing *ls* in Putty. 
 * To run your script, simply type : ./*Name_of_your_file* in Putty.
 
-##Wiring
+## Wiring
 
 The last thing you have to do to use our project is to connect the temperature sensor to the FPGA. You have to connect 4 pins :
 1. The power supply of the sensor on the *+5V* of the chip (green wire on our photo)
