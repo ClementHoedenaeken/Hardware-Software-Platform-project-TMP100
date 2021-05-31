@@ -6,7 +6,7 @@ We are two students of the Faculty of Engineering of the university of Mons 🇧
 
 
 
-For our course of *Hardware/Software Platforms* we have to implement the interface between a sensor and a computer through an FPGA. This repository contain a file called *Explanations* where we placed a lots of information explaining our work 📚. We will soon add a tutorial helping you to reproduce our prototype. 
+For our course of *Hardware/Software Platforms* we have to implement the interface between a sensor and a computer through an FPGA. This repository contain a file called [*Explanations*](https://github.com/ClementHoedenaeken/Hardware-Software-Platform-project-TMP100/blob/main/Explanations.md) where we placed a lots of information explaining our work 📚. We added in this file a tutorial helping you to reproduce our prototype. 
 
 We choosed a temperature sensor 🌡️ which will be connected to an FPGA through an **I²C** bus. The FPGA is charged to place the temperature value in 2 registers that can be read by the ARM processor on the chip. This processor is charged to read the registers and print the value of the temperature on the screen of the computer via a serial port. 
 
